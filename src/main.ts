@@ -17,8 +17,6 @@ bearButton.className = "bearButton";
 bearButton.type = "button";
 bearButton.innerHTML = buttonName;
 
-app.append(bearButton);
-
 const bearCounting: HTMLDivElement = document.createElement("div");
 bearCounting.textContent = getBearCount();
 
@@ -35,7 +33,21 @@ function getBearCount() {
   return `${bearCounter} bears`;
 }
 
-setInterval(function () {
-  bearCounter += 1;
+//setInterval(function () {
+//  bearCounter += 1;
+//  bearCounting.textContent = getBearCount();
+//}, 4000);
+
+let before: number = Date.now();
+let now: number;
+let fps: number = 0;
+
+requestAnimationFrame(function loop() {
+  now = Date.now();
+  fps = Math.round(1000 / (now - before));
+  before = now;
+  requestAnimationFrame(loop);
+  bearCounter += 1 / fps;
   bearCounting.textContent = getBearCount();
-}, 4000);
+  console.log("fps", fps);
+});
