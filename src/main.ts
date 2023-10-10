@@ -1,9 +1,12 @@
 import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
-
 const gameName = "Catch'em Bears!";
 const buttonName = "&#128059;";
+let then: number = Date.now();
+let now: number = 0;
+let fps: number = 0;
+let itemBought: boolean = false;
 let bearCounter: number = 0;
 
 document.title = gameName;
@@ -40,6 +43,7 @@ if (bearCounter < 10) {
 
 window.requestAnimationFrame(frameFunction);
 
+// functions
 function bearOnClicked() {
   bearCounter += 1;
   bearCounting.textContent = `${getBearCount()} bears`;
@@ -55,19 +59,15 @@ function getBearCount() {
   return bearCounter;
 }
 
-let then: number = performance.now();
-let timer: number = 0;
-let itemBought: boolean = false;
-
 function frameFunction() {
-  timer += performance.now() - then;
-  if (timer >= 1000 && itemBought == true) {
-    bearCounter += 1;
+  now = Date.now();
+  fps = Math.round(1000 / (now - then));
+  then = now;
+  console.log(fps);
+  if (itemBought == true) {
+    bearCounter += 1 / fps;
     bearCounting.textContent = `${getBearCount()} bears`;
-    timer = 0;
   }
   skillButton.disabled = bearCounter < 10;
-
-  then = performance.now();
   window.requestAnimationFrame(frameFunction);
 }
