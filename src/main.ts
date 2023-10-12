@@ -56,7 +56,7 @@ function skillOnClicked() {
 }
 
 function getBearCount() {
-  return bearCounter;
+  return bearCounter.toFixed(2);
 }
 
 function frameFunction() {
