@@ -9,6 +9,7 @@ let fps: number = 0;
 let itemBought: boolean = false;
 let bearCounter: number = 0;
 let bearGrowth: number = 0;
+let cost: number = 10;
 
 document.title = gameName;
 
@@ -30,15 +31,20 @@ const bearCounting: HTMLDivElement = document.createElement("div");
 bearCounting.textContent = `${getBearCount()} bears`;
 app.append(bearCounting);
 
+// rate display
+const bearRate: HTMLDivElement = document.createElement("div");
+bearRate.textContent = `${bearGrowth} bears / s`;
+app.append(bearRate);
+
 // skill button
 const skillButton: HTMLButtonElement = document.createElement("button");
 skillButton.className = "skillButton";
 skillButton.type = "button";
-skillButton.textContent = "Cost 10: bear trap (honey)";
+skillButton.textContent = `Cost ${cost}: bear trap (honey)`;
 skillButton.addEventListener("click", skillOnClicked);
 app.append(skillButton);
 
-if (bearCounter < 10) {
+if (bearCounter < cost) {
   skillButton.disabled = true;
 }
 
@@ -53,8 +59,11 @@ function bearOnClicked() {
 function skillOnClicked() {
   itemBought = true;
   bearGrowth += 1;
-  bearCounter -= 10;
+  bearCounter -= cost;
+  cost *= 1.15;
   bearCounting.textContent = `${getBearCount()} bears`;
+  skillButton.textContent = `Cost ${cost}: bear trap (honey)`;
+  bearRate.textContent = `${bearGrowth} bears / s`;
 }
 
 function getBearCount() {
@@ -69,7 +78,8 @@ function frameFunction() {
   if (itemBought == true) {
     bearCounter += bearGrowth / fps;
     bearCounting.textContent = `${getBearCount()} bears`;
+    skillButton.textContent = `Cost ${cost}: bear trap (honey)`;
   }
-  skillButton.disabled = bearCounter < 10;
+  skillButton.disabled = bearCounter < cost;
   window.requestAnimationFrame(frameFunction);
 }
