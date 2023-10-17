@@ -8,6 +8,7 @@ let now: number = 0;
 let fps: number = 0;
 let itemBought: boolean = false;
 let bearCounter: number = 0;
+let bearGrowth: number = 0;
 
 document.title = gameName;
 
@@ -51,6 +52,7 @@ function bearOnClicked() {
 
 function skillOnClicked() {
   itemBought = true;
+  bearGrowth += 1;
   bearCounter -= 10;
   bearCounting.textContent = `${getBearCount()} bears`;
 }
@@ -63,9 +65,9 @@ function frameFunction() {
   now = Date.now();
   fps = Math.round(1000 / (now - then));
   then = now;
-  console.log(fps);
+  // console.log(fps);
   if (itemBought == true) {
-    bearCounter += 1 / fps;
+    bearCounter += bearGrowth / fps;
     bearCounting.textContent = `${getBearCount()} bears`;
   }
   skillButton.disabled = bearCounter < 10;
